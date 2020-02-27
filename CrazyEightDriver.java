@@ -1,4 +1,5 @@
 import.java.util.Scanner;
+import java.util.Collections;
 
 public class CrazyEightDriver
 {
@@ -72,11 +73,32 @@ public class CrazyEightDriver
     }
     // show first card
     System.out.println("First card: " + deck[0]);
-    for (int i = 1; i < 4; i++)
+    // PLayer 1 turn
+    // display player 1's cards
+    System.out.println("Player 1's turn");
+    for (int j = 0; j < p1.size(); j++)
     {
-        System.out.println("Player " + i + "'s turn");
-        for (int j = 0; j < )
+        System.out.print(p1.number(j) + "of" + p1.suit(j));
     }
+    // pick card to play
+    do
+    {
+        String played = kb.next();
+        for (int j = 0; j < p1.size(); j++)
+        {
+            boolean isFound = played.contains(p1.number(j)) && played.contains(p1.suit(j));
+            if (isFound)
+            {
+                System.out.println("Player 1 played " + played);
+                p1.remove(j);
+                break;
+            }
+        }
+        if (!isFound)
+        {
+            System.out.println("The card could not be found. Please input another card.");
+        }
+    } while (!isFound)
     for (int)
     if (card.suit(0) == card.suit)
 }
