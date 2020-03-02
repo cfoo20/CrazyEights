@@ -1,141 +1,258 @@
-import.java.util.Scanner;
+import java.util.Scanner;
 import java.util.Collections;
+import java.util.ArrayList;
 
 public class CrazyEightDriver
 {
-    Scanner kb = new Scanner (System.in);
-    // Create a deck of cards
-    ArrayList<String> deck = new ArrayList<String>(card());
-    // card[] deck = new card[52];
-    for (int i = 0; i < deck.length; i++)
+    public static void main(String[] args)
     {
-        if (0 >= i && i < 13)
+        Scanner kb = new Scanner (System.in);
+        // Create a deck of cards
+        ArrayList<Card> deck = new ArrayList<Card>();
+        // card[] deck = new card[52];
+        for (int i = 0; i < 4; i++)
         {
-            suit = 'clubs';
-        }
-        if (i >= 13 && i < 26)
-        {
-            suit = 'spades';
-        }
-        if (i >= 26 && i < 39)
-        {
-            suit = 'hearts';
-        }
-        else
-        {
-            suit = 'diamonds';
-        }
-        for (int j = 1; j < 14; j++)
-        {
-            if (j > 1 && j < 11)
+            String suit = "";
+            String number = "";
+            if (i == 0)
             {
-                number = Integer.toString(j);
+                suit = "clubs";
             }
-            if (j = 1)
+            if (i == 1)
             {
-                number = 'ace';
+                suit = "spades";
             }
-            if (j = 11)
+            if (i == 2)
             {
-                number = 'jack';
+                suit = "hearts";
             }
-            if (j = 12)
+            if (i == 3)
             {
-                number = 'queen';
+                suit = "diamonds";
             }
-            if (j = 13)
+            for (int j = 1; j < 14; j++)
             {
-                number = 'king';
+                if (j > 1 && j < 11)
+                {
+                    number = Integer.toString(j);
+                }
+                if (j == 1)
+                {
+                    number = "ace";
+                }
+                if (j == 11)
+                {
+                    number = "jack";
+                }
+                if (j == 12)
+                {
+                    number = "queen";
+                }
+                if (j == 13)
+                {
+                    number = "king";
+                }
+                Card card = new Card(suit, number);
+                deck.add(card);
             }
-            deck.add(suit, number);
         }
-    }
-    // Shuffle deck
-    Collections.shuffle(deck, new Random());
-    // Create player (default 3)
-    ArrayList<String> p1 = new ArrayList<String>(card());
-    for (int i = 0; i < 8; i++)
-    {
-        p1.add(deck[i]);
-        deck.remove(i);
-    }
-    ArrayList<String> p2 = new ArrayList<String>(card());
-    for (int i = 0; i < 8; i++)
-    {
-        p1.add(deck[i]);
-        deck.remove(i);
-    }
-    ArrayList<String> p3 = new ArrayList<String>(card());
-    for (int i = 0; i < 8; i++)
-    {
-        p1.add(deck[i]);
-        deck.remove(i);
-    }
-    // show first card of game
-    ArrayList<String> cardsPlayed = new ArrayList<String>(card());
-    cardsPlayed.add(deck[0]);
-    deck.remove(0);
-    System.out.println("First card: " + cardsPlayed[0]);
-    // PLayer 1 turn
-    // display player 1's cards
-    System.out.println("Player 1's turn");
-    for (int i = 0; i < p1.size(); i++)
-    {
-        System.out.print(p1.number(i) + "of" + p1.suit(i));
-    }
-    // pick card to play
-    boolean isFound = false;
-    do
-    {
-        String played = kb.next();
-        // play eight
-        if (played.contains('8'))
+        // Shuffle deck
+        Collections.shuffle(deck);
+        // print out pile
+        /*for (int i = 0; i < deck.size(); i++)
         {
+            Card cards = deck.get(i);
+            System.out.println(cards.displayNumber() + " of " + cards.displaySuit());
+        }*/
+        // Create players (default 2)
+        ArrayList<Card> p1 = new ArrayList<Card>();
+        for (int i = 0; i < 8; i++)
+        {
+            p1.add(deck.get(i));
+            deck.remove(i);
+        }
+        ArrayList<Card> p2 = new ArrayList<Card>();
+        for (int i = 0; i < 8; i++)
+        {
+            p1.add(deck.get(i));
+            deck.remove(i);
+        }
+        // show first card of game
+        // Create a played cards pile
+        ArrayList<Card> cardsPlayed = new ArrayList<Card>();
+        cardsPlayed.add(deck.get(0));
+        deck.remove(0);
+        Card cards = cardsPlayed.get(0);
+        Card lastCard = cards;
+        System.out.println("First card: " + cards.displayNumber() + " of " + cards.displaySuit());
+
+        boolean checkWin = false;
+        while (!checkWin)
+        {
+            // PLayer 1 turn
+            // display player 1's cards
+            System.out.println("Player 1's turn");
             for (int i = 0; i < p1.size(); i++)
             {
-                isFound = played.contains('8') && played.contains(p1.suit(i));
-                if (isFound)
-                {
-                    System.out.println("Player 1 played " + played);
-                    cardsPlayed.add(p1[i]);
-                    p1.remove(i);
-                    break;
-                }
+                cards = p1.get(i);
+                System.out.println(cards.displayNumber() + " of " + cards.displaySuit());
             }
-            // ask for suit
-            System.out.print("What suit do you want to change it to?")
-            String newSuit = kb.next();
-
-        }
-        // pick up one card
-        if (played.equals('pick up'))
-        {
-            p1.add(deck[0]);
-            deck.remove(0);
-            if (deck.isEmpty())
+            // pick card to play
+            boolean isFound = false;
+            do
             {
-
-            }
-        }
-        if (isFound)
-        {
-            for (int i = 0; i < p1.size(); i++)
-            {
-                isFound = played.contains(p1.number(i)) && played.contains(p1.suit(i));
-                if (isFound)
+                System.out.println("What card would you like to play?");
+                String played = kb.next();
+                // play eight
+                if (played.contains("8"))
                 {
-                    System.out.println("Player 1 played " + played);
-                    cardsPlayed.add(p1[i]);
-                    p1.remove(i);
-                    break;
+                    for (int i = 0; i < p1.size(); i++)
+                    {
+                        cards = p1.get(i);
+                        isFound = played.contains("8") && played.contains(cards.displaySuit());
+                        if (isFound)
+                        {
+                            System.out.println("Player 1 played " + played);
+                            cardsPlayed.add(cards);
+                            lastCard = cards;
+                            p1.remove(i);
+                            break;
+                        }
+                    }
+                    // ask for suit
+                    System.out.print("What suit do you want to change it to?");
+                    String newSuit = kb.next();
+                    lastCard = new Card(newSuit, "8");
                 }
+                // pick up one card
+                if (played.equals("pick up"))
+                {
+                    p1.add(deck.get(0));
+                    deck.remove(0);
+                    // move cards from played pile to deck
+                    if (deck.isEmpty())
+                    {
+                        int size = cardsPlayed.size();
+                        for (int i = 0; i < size - 1; i++)
+                        {
+                            deck.add(cardsPlayed.get(0));
+                            cardsPlayed.remove(0);
+                        }
+                        // Shuffle deck
+                        Collections.shuffle(deck);
+                    }
+                }
+                else
+                {
+                    if (played.contains(lastCard.displaySuit()) || played.contains(lastCard.displayNumber()))
+                    {
+                        for (int i = 0; i < p1.size(); i++)
+                        {
+                            cards = p1.get(i);
+                            isFound = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
+                            if (isFound)
+                            {
+                                System.out.println("Player 1 played " + played);
+                                cardsPlayed.add(cards);
+                                lastCard = cards;
+                                p1.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!isFound)
+                {
+                    System.out.println("The card could not be found. Please input another card.");
+                }
+            } while (!isFound);
+            if (p1.isEmpty())
+            {
+                checkWin = true;
+                System.out.println("Player 1 wins!");
+                break;
+            }
+            // Player 2 turn
+            // display player 2's cards
+            System.out.println("Player 2's turn");
+            for (int i = 0; i < p2.size(); i++)
+            {
+                cards = p2.get(i);
+                System.out.println(cards.displayNumber() + " of " + cards.displaySuit());
+            }
+            // pick card to play
+            do
+            {
+                System.out.println("What card would you like to play?");
+                String played = kb.next();
+                // play eight
+                if (played.contains("8"))
+                {
+                    for (int i = 0; i < p2.size(); i++)
+                    {
+                        cards = p2.get(i);
+                        isFound = played.contains("8") && played.contains(cards.displaySuit());
+                        if (isFound)
+                        {
+                            System.out.println("Player 2 played " + played);
+                            cardsPlayed.add(cards);
+                            lastCard = cards;
+                            p2.remove(i);
+                            break;
+                        }
+                    }
+                    // ask for suit
+                    System.out.print("What suit do you want to change it to?");
+                    String newSuit = kb.next();
+                    lastCard = new Card(newSuit, "8");
+                }
+                // pick up one card
+                if (played.equals("pick up"))
+                {
+                    p1.add(deck.get(0));
+                    deck.remove(0);
+                    // move cards from played pile to deck
+                    if (deck.isEmpty())
+                    {
+                        int size = cardsPlayed.size();
+                        for (int i = 0; i < size - 1; i++)
+                        {
+                            deck.add(cardsPlayed.get(0));
+                            cardsPlayed.remove(0);
+                        }
+                        // Shuffle deck
+                        Collections.shuffle(deck);
+                    }
+                }
+                else
+                {
+                    if (played.contains(lastCard.displaySuit()) || played.contains(lastCard.displayNumber()))
+                    {
+                        for (int i = 0; i < p2.size(); i++)
+                        {
+                            cards = p2.get(i);
+                            isFound = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
+                            if (isFound)
+                            {
+                                System.out.println("Player 2 played " + played);
+                                cardsPlayed.add(cards);
+                                lastCard = cards;
+                                p2.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!isFound)
+                {
+                    System.out.println("The card could not be found. Please input another card.");
+                }
+            } while (!isFound);
+            if (p2.isEmpty())
+            {
+                checkWin = true;
+                System.out.println("Player 2 wins!");
             }
         }
-        if (!isFound)
-        {
-            System.out.println("The card could not be found. Please input another card.");
-        }
-    } while (!isFound)
-    for (int)
-    if (card.suit(0) == card.suit)
+    }
 }
