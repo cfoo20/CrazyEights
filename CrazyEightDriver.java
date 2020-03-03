@@ -74,7 +74,7 @@ public class CrazyEightDriver
         ArrayList<Card> p2 = new ArrayList<Card>();
         for (int i = 0; i < 8; i++)
         {
-            p1.add(deck.get(i));
+            p2.add(deck.get(i));
             deck.remove(i);
         }
         // show first card of game
@@ -89,7 +89,10 @@ public class CrazyEightDriver
         boolean checkWin = false;
         while (!checkWin)
         {
+            boolean isFound1 = false;
+            boolean isFound2 = false;
             // PLayer 1 turn
+            System.out.println("Card played: " + lastCard.displayNumber() + " of " + lastCard.displaySuit());
             // display player 1's cards
             System.out.println("Player 1's turn");
             for (int i = 0; i < p1.size(); i++)
@@ -98,19 +101,18 @@ public class CrazyEightDriver
                 System.out.println(cards.displayNumber() + " of " + cards.displaySuit());
             }
             // pick card to play
-            boolean isFound = false;
-            do
+            while (!isFound1)
             {
                 System.out.println("What card would you like to play?");
-                String played = kb.next();
+                String played = kb.nextLine();
                 // play eight
                 if (played.contains("8"))
                 {
                     for (int i = 0; i < p1.size(); i++)
                     {
                         cards = p1.get(i);
-                        isFound = played.contains("8") && played.contains(cards.displaySuit());
-                        if (isFound)
+                        isFound1 = played.contains("8") && played.contains(cards.displaySuit());
+                        if (isFound1)
                         {
                             System.out.println("Player 1 played " + played);
                             cardsPlayed.add(cards);
@@ -142,30 +144,28 @@ public class CrazyEightDriver
                         Collections.shuffle(deck);
                     }
                 }
-                else
+                System.out.println(played.contains(lastCard.displaySuit()));
+                if (played.contains(lastCard.displaySuit()) || played.contains(lastCard.displayNumber()))
                 {
-                    if (played.contains(lastCard.displaySuit()) || played.contains(lastCard.displayNumber()))
+                    for (int i = 0; i < p1.size(); i++)
                     {
-                        for (int i = 0; i < p1.size(); i++)
+                        cards = p1.get(i);
+                        isFound1 = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
+                        if (isFound1)
                         {
-                            cards = p1.get(i);
-                            isFound = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
-                            if (isFound)
-                            {
-                                System.out.println("Player 1 played " + played);
-                                cardsPlayed.add(cards);
-                                lastCard = cards;
-                                p1.remove(i);
-                                break;
-                            }
+                            System.out.println("Player 1 played " + played);                                cardsPlayed.add(cards);
+                            lastCard = cards;
+                            p1.remove(i);
+                            break;
+
                         }
                     }
                 }
-                if (!isFound)
+                if (!isFound1)
                 {
                     System.out.println("The card could not be found. Please input another card.");
                 }
-            } while (!isFound);
+            }
             if (p1.isEmpty())
             {
                 checkWin = true;
@@ -173,6 +173,7 @@ public class CrazyEightDriver
                 break;
             }
             // Player 2 turn
+            System.out.println("Card played: " + lastCard.displayNumber() + " of " + lastCard.displaySuit());
             // display player 2's cards
             System.out.println("Player 2's turn");
             for (int i = 0; i < p2.size(); i++)
@@ -181,18 +182,18 @@ public class CrazyEightDriver
                 System.out.println(cards.displayNumber() + " of " + cards.displaySuit());
             }
             // pick card to play
-            do
+            while (!isFound2)
             {
                 System.out.println("What card would you like to play?");
-                String played = kb.next();
+                String played = kb.nextLine();
                 // play eight
                 if (played.contains("8"))
                 {
                     for (int i = 0; i < p2.size(); i++)
                     {
                         cards = p2.get(i);
-                        isFound = played.contains("8") && played.contains(cards.displaySuit());
-                        if (isFound)
+                        isFound2 = played.contains("8") && played.contains(cards.displaySuit());
+                        if (isFound2)
                         {
                             System.out.println("Player 2 played " + played);
                             cardsPlayed.add(cards);
@@ -231,8 +232,8 @@ public class CrazyEightDriver
                         for (int i = 0; i < p2.size(); i++)
                         {
                             cards = p2.get(i);
-                            isFound = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
-                            if (isFound)
+                            isFound2 = played.contains(cards.displayNumber()) && played.contains(cards.displaySuit());
+                            if (isFound2)
                             {
                                 System.out.println("Player 2 played " + played);
                                 cardsPlayed.add(cards);
@@ -243,11 +244,11 @@ public class CrazyEightDriver
                         }
                     }
                 }
-                if (!isFound)
+                if (!isFound2)
                 {
                     System.out.println("The card could not be found. Please input another card.");
                 }
-            } while (!isFound);
+            }
             if (p2.isEmpty())
             {
                 checkWin = true;
